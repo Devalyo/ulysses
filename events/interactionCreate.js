@@ -1,4 +1,5 @@
 const {Events} = require('discord.js');
+const {pookie, pookieAlt} = require('../config.json')
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -21,7 +22,8 @@ module.exports = {
 
 		if (now < expirationTime + cooldownAmount) {
 			const expiredTimestamp = Math.round((expirationTime + cooldownAmount) / 1_000);
-			if(interaction.member.id == 'akamemis' || interaction.member.id == 'akaems')
+			/// My girlfriend thought that the default message was rude.
+			if(interaction.member.id == pookie || interaction.member.id == pookieAlt)
 			{
 				return interaction.reply({ content: `calma amorzinho... <t:${expiredTimestamp}:R>.`});
 			}
