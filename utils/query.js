@@ -5,7 +5,9 @@ module.exports.youtubeSearch = async (query) =>
 {
     if(query.includes("spotify"))
     {
-        return await yts(await module.exports.HandleSpotifyLink(query)).videos;
+        title = await module.exports.HandleSpotifyLink(query)
+
+        return (await yts(title)).videos;
     }
     
     return  (await yts(query)).videos;
@@ -17,7 +19,6 @@ module.exports.HandleSpotifyLink = async (query) =>
 
     title = await getTitleFromURL(query)
     title = title.replace("- song and lyrics", "").slice(0, -10);
-    console.log(title);
 
     return title; 
 
@@ -37,7 +38,7 @@ async function getTitleFromURL(url) {
 
         return title;
     } catch (error) {
-        console.error("Error fetching title:", error);
+        console.error("AAAAAAAAAAAAAAAAAAAA", error);
         return null; 
     }
 }

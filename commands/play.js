@@ -26,12 +26,13 @@ async execute(interaction)
 			return interaction.reply(`${interaction.member.displayName}, entre em um canal de voz.`)
 		}
 
+		interaction.deferReply();
 		song = await youtubeSearch(interaction.options.getString('musga'))
 		song = song.at(0)
 		console.log(song)
-
+		interaction.followUp(`**"${song.title}"** na fila!!!`)
+		
 		addToQueue(guildId, song, voiceChannel, textChannel);
-		interaction.reply(`**"${song.title}"** na fila!!!`)
 
 }
 }
