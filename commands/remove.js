@@ -13,13 +13,11 @@ module.exports = {
 ),
 
 
-
 async execute(interaction)
 {
 		const guildId = interaction.guild.id
         const index = interaction.options.getInteger('index');
 
         remove(interaction, index - 1, guildId);
-
 }
 }

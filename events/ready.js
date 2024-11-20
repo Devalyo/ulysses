@@ -1,5 +1,4 @@
 const {Events} = require('discord.js');
-const { joinVoiceChannel } = require('@discordjs/voice');
 
 
 module.exports = {

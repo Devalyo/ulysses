@@ -10,9 +10,6 @@ module.exports = {
 async execute(interaction)
 {
 		const guildId = interaction.guild.id
-
-
         clear(interaction, guildId);
-
 }
 }

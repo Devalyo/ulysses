@@ -7,11 +7,12 @@ module.exports =
     .setName('skip')
     .setDescription('skipiddi toilet'),
 
-    async execute(interaction){
+    async execute(interaction)
+    {
 
         const channel = interaction.member.voice.channel;
         const guildId = interaction.guild.id
-       skipSong(interaction, guildId, channel) 
+        skipSong(interaction, guildId, channel) 
 
     }
 }

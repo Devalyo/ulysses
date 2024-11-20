@@ -161,8 +161,9 @@ module.exports.clear = (interaction, guildId) => {
         interaction.reply("fila?????/")
         return
     }
-
-    queues.set(guildId) = []
+    
+    queue.splice(1);
+    queues.set(guildId, queue);
 
     interaction.reply("👍")
 };

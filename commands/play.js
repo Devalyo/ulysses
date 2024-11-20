@@ -21,7 +21,6 @@ async execute(interaction)
 		const textChannel = interaction.channel
 		const guildId = interaction.guild.id
 
-
 		if(!voiceChannel)
 		{
 			return interaction.reply(`${interaction.member.displayName}, entre em um canal de voz.`)
@@ -32,7 +31,7 @@ async execute(interaction)
 		console.log(song)
 
 		addToQueue(guildId, song, voiceChannel, textChannel);
-		interaction.reply(`${song.title} na fila!!!`)
+		interaction.reply(`**"${song.title}"** na fila!!!`)
 
 }
 }
