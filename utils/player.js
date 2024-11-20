@@ -139,7 +139,7 @@ module.exports.remove = (interaction, index, guildId) => {
     queue = queues.get(guildId)
     if(!queue)
     {
-        interaction.reply("fila?????/")
+        interaction.reply("fila?????")
         return
     }
 
