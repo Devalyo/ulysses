@@ -54,7 +54,6 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
     if(!connection)
     {
         module.exports.joinChannel(channel, guildId)
-        
     }
    
 
@@ -77,11 +76,11 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
     connection.subscribe(player);
 
     player.on(AudioPlayerStatus.Playing, () => {
-        console.log(`Now playing: ${song.title}`);
+        console.log(`Now playing: **"${song.title}"**`);
         createEmbed(textChannel, song)
-      
+        
     });
-
+    
     player.on(AudioPlayerStatus.Idle, () => {
         queue.shift(); 
         module.exports.playNextSong(guildId, channel, textChannel);
@@ -106,16 +105,16 @@ module.exports.skipSong = (interaction, guildId, channel) => {
 
 module.exports.fila = (interaction, guildId) => {
     const queue = queues.get(guildId);
-    if (!queue || queue.length() < 1)
+    if (!queue || queue.length < 1)
     {
         interaction.reply("fila vazia"); 
         return
     }
 
     message = "```\n"
-    message += "1 - " + queue[0].title + "\n";
+    message += "1 - " + queue[0].title + " **TOCANDO AGORA**\n";
 
-    for(i = 1; i < queue.length(); i++)
+    for(i = 1; i < queue.length; i++)
     {
         message += (i + 1) + " - " + queue[i].title + "\n"; 
 
@@ -163,7 +162,7 @@ module.exports.clear = (interaction, guildId) => {
         return
     }
 
-    queue = [];
+    queues.set(guildId) = []
 
     interaction.reply("👍")
 };
@@ -180,7 +179,7 @@ function createEmbed(channel, song)
 
 
 channel.send({
-    content: "Tocano:", 
+    content: "**Tocano:**\n", 
     embeds: [exampleEmbed] });
 
 }
