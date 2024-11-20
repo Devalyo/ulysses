@@ -7,7 +7,7 @@ let player = null;
 let connection = null;
 
 queues = new Map()
-/// Make song dict that holds playing?, url, and title ??? actual retard
+/// Make song dict that holds playing?, url, and title /// ??? actual retard
 
 
 module.exports.joinChannel = (channel, guildId) => {
@@ -175,8 +175,11 @@ function createEmbed(channel, song)
 	.setColor(0xD91010)
 	.setTitle(`${song.title}`)
 	.setURL(song.url)
+    .setThumbnail('https://i.imgur.com/ji0uADI.jpeg')
 	.setDescription(song.description + "\n")
-	.setImage(song.thumbnail);
+	.setImage(song.thumbnail)
+    .setAuthor({ name: song.author.name, url: song.author.url })
+    .setFooter({ text: "Duração: " + song.duration.timestamp});  
 
 
 channel.send({

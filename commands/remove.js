@@ -10,6 +10,7 @@ module.exports = {
     .setName("index")
 	.setDescription('posição na fila')
 	.setRequired(true),
+	
 ),
 
 
