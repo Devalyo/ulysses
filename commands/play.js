@@ -21,13 +21,20 @@ async execute(interaction)
 		const textChannel = interaction.channel
 		const guildId = interaction.guild.id
 
+		const query = interaction.options.getString('musga');
+		/// Sanitize
+		if(query.length > 73)
+		{
+			query = query.slice(0, 73)
+		}
+
 		if(!voiceChannel)
 		{
 			return interaction.reply(`${interaction.member.displayName}, não está em um canal de voz.`)
 		}
 
 		await interaction.deferReply();
-		song = await youtubeSearch(interaction.options.getString('musga'))
+		song = await youtubeSearch(query)
 		song = song.at(0)
 		console.log(song)
 		
