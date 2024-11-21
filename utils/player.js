@@ -90,6 +90,7 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
 
 
 module.exports.skipSong = (interaction, guildId, channel) => {
+
     const queue = queues.get(guildId);
     if (queue) {
         interaction.reply(`pulando **"${queue[0].title}"**`)
@@ -103,12 +104,12 @@ module.exports.skipSong = (interaction, guildId, channel) => {
         interaction.reply("fila?????")
     }
 
-
-
 };
 
 
+
 module.exports.fila = (interaction, guildId) => {
+
     const queue = queues.get(guildId);
     if (!queue || queue.length < 1)
     {
@@ -132,11 +133,15 @@ module.exports.fila = (interaction, guildId) => {
 
 
 module.exports.stopAudio = () => {
+
     if (player) {
         player.stop();
         connection.destroy();
     }
+
 };
+
+
 
 module.exports.remove = (interaction, index, guildId) => {
 
@@ -158,6 +163,8 @@ module.exports.remove = (interaction, index, guildId) => {
 
 };
 
+
+
 module.exports.clear = (interaction, guildId) => {
 
     queue = queues.get(guildId)
@@ -174,6 +181,7 @@ module.exports.clear = (interaction, guildId) => {
 };
 
 
+
 function createEmbed(channel, song)
 {
     const songEmbed = new EmbedBuilder()
@@ -187,6 +195,6 @@ function createEmbed(channel, song)
     .setFooter({ text: "Duração: " + song.duration.timestamp});  
 
 
-channel.send({ embeds: [songEmbed] });
+    channel.send({ embeds: [songEmbed] });
 
 }
