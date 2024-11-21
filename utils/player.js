@@ -92,12 +92,17 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
 module.exports.skipSong = (interaction, guildId, channel) => {
     const queue = queues.get(guildId);
     if (queue) {
-        interaction.reply(`pulando **"${queue[0].title}"**`)
+        interaction.say(`pulando **"${queue[0].title}"**`)
         player.stop();
         queue.shift()
         console.log("Skipping current song.");
         this.playNextSong(guildId, channel, interaction.channel);
     }
+    else
+    {
+        interaction.say("fila?????")
+    }
+
 
 
 };
