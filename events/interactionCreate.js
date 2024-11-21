@@ -4,17 +4,19 @@ const {pookie, pookieAlt} = require('../config.json')
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
+		
 		if (!interaction.isChatInputCommand()) return;
 		const command = interaction.client.commands.get(interaction.commandName);
 		if (!command) {
 			console.error(`No command matching ${interaction.commandName} was found.`);
 			return;
 		}
+
+		// cooldown logic
 		const { cooldowns } = interaction.client;	
 		if (!cooldowns.has(command.data.name)) {
 			cooldowns.set(command.data.name, 0);
 		}
-
 		const now = Date.now();
 		const expirationTime = cooldowns.get(command.data.name);
 		const defaultCooldownDuration = 3;
@@ -22,7 +24,7 @@ module.exports = {
 
 		if (now < expirationTime + cooldownAmount) {
 			const expiredTimestamp = Math.round((expirationTime + cooldownAmount) / 1_000);
-			/// My girlfriend thought that the default message was rude.
+			/// my girlfriend thought that the default message was rude.
 			if(interaction.member.id == pookie || interaction.member.id == pookieAlt)
 			{
 				return interaction.reply({ content: `calma amorzinho... <t:${expiredTimestamp}:R>.`});
@@ -32,6 +34,7 @@ module.exports = {
 		cooldowns.set(command.data.name, now);
 		
 
+		// Run command
 		try {
 			await command.execute(interaction);
 		} catch (error) {

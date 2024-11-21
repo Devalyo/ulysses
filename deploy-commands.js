@@ -39,8 +39,9 @@ for (const file of commandFiles) {
 
 
 
-		// // Construct and prepare an instance of the REST module
-		// rest.put(Routes.applicationGuildCommands(clientId, "guildId"), { body: [] })
+        /// you need to send send an empty body of commands in order to delete them...yeah
+		
+		// rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
 		// 	.then(() => console.log('Successfully deleted all guild commands.'))
 		// 	.catch(console.error);
 		

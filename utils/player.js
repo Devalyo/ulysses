@@ -92,7 +92,7 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
 module.exports.skipSong = (interaction, guildId, channel) => {
     const queue = queues.get(guildId);
     if (queue) {
-        interaction.say(`pulando **"${queue[0].title}"**`)
+        interaction.reply(`pulando **"${queue[0].title}"**`)
         player.stop();
         queue.shift()
         console.log("Skipping current song.");
@@ -100,7 +100,7 @@ module.exports.skipSong = (interaction, guildId, channel) => {
     }
     else
     {
-        interaction.say("fila?????")
+        interaction.reply("fila?????")
     }
 
 
@@ -176,19 +176,17 @@ module.exports.clear = (interaction, guildId) => {
 
 function createEmbed(channel, song)
 {
-    const exampleEmbed = new EmbedBuilder()
+    const songEmbed = new EmbedBuilder()
 	.setColor(0xD91010)
 	.setTitle(`${song.title}`)
 	.setURL(song.url)
     .setThumbnail('https://i.imgur.com/ji0uADI.jpeg')
 	.setDescription(song.description + "\n")
 	.setImage(song.thumbnail)
-    .setAuthor({ name: song.author.name, url: song.author.url })
+    .setAuthor({ name: "Tocando agora"})
     .setFooter({ text: "Duração: " + song.duration.timestamp});  
 
 
-channel.send({
-    content: "**Tocano:**\n", 
-    embeds: [exampleEmbed] });
+channel.send({ embeds: [songEmbed] });
 
 }

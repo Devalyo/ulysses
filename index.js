@@ -10,6 +10,8 @@ const client = new Client({ intents:
     GatewayIntentBits.GuildVoiceStates
 ],
 });
+
+// Collections are recommended here in the discord.js documentation
 client.commands = new Collection();
 client.cooldowns = new Collection();
 
