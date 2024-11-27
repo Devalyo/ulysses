@@ -5,8 +5,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 module.exports.getAIresponse =  async (prompt) => {
 
-    prompt = (process.env.EMIRIPROMPT) + prompt
-
+  prompt = process.env.JAILBREAK + process.env.EMIRIPROMPT + prompt
   try {
     const res = await model.generateContent([prompt]);
     return (res.response.text() || "no more A.I.....");
