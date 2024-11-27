@@ -7,6 +7,7 @@ module.exports = {
 	once: true,
 	execute(client) {
 		console.log(`${client.user.tag} online 🔥🔥`);
+		console.log(client.guilds.cache.map(guild => guild.name));
 	},
 
 };
