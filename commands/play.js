@@ -22,10 +22,6 @@ async execute(interaction)
 		const guildId = interaction.guild.id
 
 		const query = interaction.options.getString('musga');
-		if(query.length > 73)
-		{
-			query = query.slice(0, 73)
-		}
 
 		if(!voiceChannel)
 		{

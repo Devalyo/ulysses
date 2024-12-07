@@ -1,4 +1,4 @@
-const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus} = require('@discordjs/voice');
+const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus} = require('@discordjs/voice');
 const ytdl = require('@distube/ytdl-core');  
 const {EmbedBuilder} = require('discord.js');
 
@@ -43,7 +43,7 @@ module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
 
 module.exports.playNextSong = async (guildId, channel, textChannel) => {
 
-    const queue = queues.get(guildId);
+    let queue = queues.get(guildId);
     if (queue.length === 0) {
         console.log("Queue is empty.");
         connection.destroy();
@@ -74,6 +74,22 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
     const audioResource = createAudioResource(stream)
     player.play(audioResource);
     connection.subscribe(player);
+
+    connection.on(VoiceConnectionStatus.Disconnected, async (oldState, newState) => {
+        try {
+            await Promise.race([
+                entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
+                entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
+            ]);
+        } catch (error) {
+            queues.delete(guildId);
+            console.log("AAAAAAAAAAAA")
+            player.stop();
+            connection.destroy();
+            connection = null;
+        }
+    });
+
 
     player.on(AudioPlayerStatus.Playing, () => {
         console.log(`Now playing: **"${song.title}"**`);
@@ -127,17 +143,6 @@ module.exports.fila = (interaction, guildId) => {
     }
 
     interaction.reply(message + "```");
-
-};
-
-
-
-module.exports.stopAudio = () => {
-
-    if (player) {
-        player.stop();
-        connection.destroy();
-    }
 
 };
 
