@@ -84,8 +84,8 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
         } catch (error) {
             queues.delete(guildId);
             console.log("AAAAAAAAAAAA")
-            player.stop();
-            connection.destroy();
+            if (player) { player.stop(); }
+            if (connection) { connection.destroy(); }
             connection = null;
         }
     });
