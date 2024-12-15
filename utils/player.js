@@ -6,7 +6,7 @@ const {EmbedBuilder} = require('discord.js');
 let player = null;
 let connection = null;
 
-queues = new Map()
+let queues = new Map()
 /// Make song dict that holds playing?, url, and title /// ??? actual retard
 
 
