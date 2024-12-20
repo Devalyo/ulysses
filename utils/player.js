@@ -2,26 +2,31 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStat
 const ytdl = require('@distube/ytdl-core');  
 const {EmbedBuilder} = require('discord.js');
 
+const connections = new Map(); // store connections by guild id
 
 let player = null;
-let connection = null;
+// let connection = null;
 
 let queues = new Map()
-/// Make song dict that holds playing?, url, and title /// ??? actual retard
+/// Make song dict that holds playing?, url, and title /// ??? actual retard // trueee
 
 
 module.exports.joinChannel = (channel, guildId) => {
-    if (connection) {
-        console.log("Already connected to a voice channel.");
+    // check for an existing connection in the server
+    if (connections.has(guildId)) {
+        console.log("Already connected to a voice channel in this server.");
         return;
     }
 
-    connection = joinVoiceChannel({
+    let connection = joinVoiceChannel({
         channelId: channel.id,
         guildId: guildId,
         adapterCreator: channel.guild.voiceAdapterCreator,
         bitrate: 96000,
     });
+
+    // add server and connection to current connections
+    connections.set(guildId, connection);
 };
 
 
