@@ -7,3 +7,4 @@ A discord music bot that I built for me and my friends using the discord.js API 
 - Segment connections
 - Implement autocomplete query in play
 - Fix blocking in some functions
+- Add support for multiple server connections
