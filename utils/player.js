@@ -47,12 +47,14 @@ module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
 
 
 module.exports.playNextSong = async (guildId, channel, textChannel) => {
+    let connection = connections.get(guildId);
 
     let queue = queues.get(guildId);
     if (queue.length === 0) {
         console.log("Queue is empty.");
         connection.destroy();
-        connection = null;
+        // connection = null;
+        connections.delete(guildId);
         return;
     }
     
@@ -91,7 +93,8 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
             console.log("AAAAAAAAAAAA")
             if (player) { player.stop(); }
             if (connection) { connection.destroy(); }
-            connection = null;
+            // connection = null;
+            connections.delete(guildId);
         }
     });
 
