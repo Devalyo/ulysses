@@ -2,26 +2,31 @@ const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStat
 const ytdl = require('@distube/ytdl-core');  
 const {EmbedBuilder} = require('discord.js');
 
+const connections = new Map(); // store connections by guild id
 
 let player = null;
-let connection = null;
+// let connection = null;
 
 let queues = new Map()
-/// Make song dict that holds playing?, url, and title /// ??? actual retard
+/// Make song dict that holds playing?, url, and title /// ??? actual retard // trueee
 
 
 module.exports.joinChannel = (channel, guildId) => {
-    if (connection) {
-        console.log("Already connected to a voice channel.");
+    // check for an existing connection in the server
+    if (connections.has(guildId)) {
+        console.log("Already connected to a voice channel in this server.");
         return;
     }
 
-    connection = joinVoiceChannel({
+    let connection = joinVoiceChannel({
         channelId: channel.id,
         guildId: guildId,
         adapterCreator: channel.guild.voiceAdapterCreator,
         bitrate: 96000,
     });
+
+    // add server and connection to current connections
+    connections.set(guildId, connection);
 };
 
 
@@ -42,12 +47,14 @@ module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
 
 
 module.exports.playNextSong = async (guildId, channel, textChannel) => {
+    let connection = connections.get(guildId);
 
     let queue = queues.get(guildId);
     if (queue.length === 0) {
         console.log("Queue is empty.");
         connection.destroy();
-        connection = null;
+        // connection = null;
+        connections.delete(guildId);
         return;
     }
     
@@ -86,7 +93,8 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
             console.log("AAAAAAAAAAAA")
             if (player) { player.stop(); }
             if (connection) { connection.destroy(); }
-            connection = null;
+            // connection = null;
+            connections.delete(guildId);
         }
     });
 
