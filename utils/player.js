@@ -33,10 +33,13 @@ module.exports.joinChannel = (channel, guildId) => {
 
 module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
     if (!queues.has(guildId)) {
-        queues.set(guildId, []);
+        queues.set(guildId, {
+            queue: [],
+            index: 0,
+        });
     }
 
-    const queue = queues.get(guildId);
+    const queue = queues.get(guildId).queue;
     queue.push(song); 
     console.log(`Added song to queue`);
     if (queue.length === 1) {
@@ -49,8 +52,9 @@ module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
 module.exports.playNextSong = async (guildId, channel, textChannel) => {
     let connection = connections.get(guildId);
 
-    let queue = queues.get(guildId);
-    if (queue.length === 0) {
+    let queue = queues.get(guildId).queue;
+    let index = queues.get(guildId).index;
+    if (queue.length === 0 || index >= queue.length) {
         console.log("Queue is empty.");
         connection.destroy();
         // connection = null;
@@ -63,8 +67,7 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
         module.exports.joinChannel(channel, guildId)
     }
    
-
-    const song = queue[0]; 
+    const song = queue[index]; 
     player = createAudioPlayer();
     console.log(song)
     stream = ytdl(song.url, {
@@ -106,7 +109,8 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
     });
     
     player.on(AudioPlayerStatus.Idle, () => {
-        queue.shift(); 
+        // queue.shift(); 
+        queues.get(guildId).index++;
         module.exports.playNextSong(guildId, channel, textChannel);
     });
 };
@@ -115,11 +119,13 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
 
 module.exports.skipSong = (interaction, guildId, channel) => {
 
-    const queue = queues.get(guildId);
+    const queue = queues.get(guildId).queue;
+    let index = queues.get(guildId).index;
     if (queue) {
-        interaction.reply(`pulando **"${queue[0].title}"**`)
+        interaction.reply(`pulando **"${queue[index].title}"**`)
         player.stop();
-        queue.shift()
+        // queue.shift()
+        queues.get(guildId).index++;
         console.log("Skipping current song.");
         this.playNextSong(guildId, channel, interaction.channel);
     }
@@ -134,15 +140,16 @@ module.exports.skipSong = (interaction, guildId, channel) => {
 
 module.exports.fila = (interaction, guildId) => {
 
-    const queue = queues.get(guildId);
-    if (!queue || queue.length < 1)
+    const queue = queues.get(guildId).queue;
+    let index = queues.get(guildId).index;
+    if (!queue || queue.length < 1 || index >= queue.length)
     {
         interaction.reply("fila vazia"); 
         return
     }
 
     message = "```\n"
-    message += "1 - " + queue[0].title + " **TOCANDO AGORA**\n";
+    message += "1 - " + queue[index].title + " **TOCANDO AGORA**\n";
 
     for(i = 1; i < queue.length; i++)
     {
@@ -158,7 +165,7 @@ module.exports.fila = (interaction, guildId) => {
 
 module.exports.remove = (interaction, index, guildId) => {
 
-    queue = queues.get(guildId)
+    queue = queues.get(guildId).queue;
     if(!queue)
     {
         interaction.reply("fila?????")
@@ -180,7 +187,7 @@ module.exports.remove = (interaction, index, guildId) => {
 
 module.exports.clear = (interaction, guildId) => {
 
-    queue = queues.get(guildId)
+    queue = queues.get(guildId).queue
     if(!queue)
     {
         interaction.reply("fila?????/")
