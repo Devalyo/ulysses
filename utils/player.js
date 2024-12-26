@@ -11,6 +11,7 @@ let queues = new Map()
 /// Make song dict that holds playing?, url, and title /// ??? actual retard // trueee
 
 
+
 module.exports.joinChannel = (channel, guildId) => {
     // check for an existing connection in the server
     if (connections.has(guildId)) {
