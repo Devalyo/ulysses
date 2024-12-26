@@ -1,6 +1,6 @@
 const {joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus} = require('@discordjs/voice');
-const ytdl = require('@distube/ytdl-core');  
 const {EmbedBuilder} = require('discord.js');
+const ytdl = require('@distube/ytdl-core');  
 
 const connections = new Map(); // store connections by guild id
 
@@ -32,6 +32,7 @@ module.exports.joinChannel = (channel, guildId) => {
 
 
 module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
+
     if (!queues.has(guildId)) {
         queues.set(guildId, []);
     }
@@ -47,7 +48,8 @@ module.exports.addToQueue = async (guildId, song, channel, textChannel) => {
 
 
 module.exports.playNextSong = async (guildId, channel, textChannel) => {
-    let connection = connections.get(guildId);
+
+    let connection; 
 
     let queue = queues.get(guildId);
     if (queue.length === 0) {
@@ -58,9 +60,10 @@ module.exports.playNextSong = async (guildId, channel, textChannel) => {
         return;
     }
     
-    if(!connection)
+    if(!connections.has(guildId))
     {
         module.exports.joinChannel(channel, guildId)
+        connection = connections.get(guildId);
     }
    
 
